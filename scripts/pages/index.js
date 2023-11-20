@@ -1,19 +1,25 @@
-import recipes from "../../data/recipes";
+import recipes from "../../data/recipes.js";
 
 function displayRecipes(recipes) {
-    console.log(recipes)
-    /*
     const recipesContainer = document.getElementById('recipes-container'); // Élément du DOM où tu veux afficher les recettes
-
+    const totalRecipes = recipes.length;
+    const totalRecipesDisplay = document.createElement('p');
+    totalRecipesDisplay.textContent = totalRecipes + "Recettes";
+    recipesContainer.appendChild(totalRecipesDisplay);
+    const ingredientsSelect = document.getElementById('ingredients');
+    const appareilsSelect = document.getElementById('appareils');
+    const ustensilesSelect = document.getElementById('ustensiles');
+    console.log(ingredientsSelect.value)
     recipes.forEach(recipe => {
         // Création d'une div qui contiendra les elements de la recette
         const recipeDiv = document.createElement('div');
         recipeDiv.classList.add('recipe');
+        recipeDiv.id = recipe.id
 
-        const image = document.createElement('h3');
-        image.textContent = recipe.image;
+        /*const image = document.createElement('img');
+        image.src = "./assets/recettes/"+recipe.image;
         image.alt = recipe.name;
-
+*/
         const name = document.createElement('h2');
         name.textContent = recipe.name;
 
@@ -28,15 +34,18 @@ function displayRecipes(recipes) {
         });
 
         // Ajout des éléments à la recette
-        recipeDiv.appendChild(image);
+        //recipeDiv.appendChild(image);
         recipeDiv.appendChild(name);
         recipeDiv.appendChild(description);
         recipeDiv.appendChild(ingredientsList);
 
         // Ajout de la recette au conteneur
         recipesContainer.appendChild(recipeDiv);
-    });*/
+    });
 }
 
 
 displayRecipes(recipes);
+
+export default displayRecipes
+
