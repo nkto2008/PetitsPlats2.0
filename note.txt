@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="#">
+        <script src="https://kit.fontawesome.com/2f567fdf59.js" crossorigin="anonymous"></script>
+    </head>
+
+    <body>
+        <header>
+
+        </header>
+        <main>
+            <div id="recipes-container">
+                <!-- Div contenant les recettes à afficher -->
+            </div>
+        </main>
+        <script src="./scripts/pages/index.js" type="module"></script>
+    </body>
+
+</html>
