@@ -1,5 +1,6 @@
 import recipes from "../../data/recipes.js"
 import displayRecipes from "../pages/index.js";
+
 // Fonction permettant l'ajout d'option dans le select voulu
 //Value: identifié pour l'option
 //text: valeur de l'option affiché a l'utilisateur
@@ -49,10 +50,59 @@ function addFilters(recipes) {
     ustensilesSet.forEach(ustensil => {
         addOption(ustensilesSelect, ustensil, ustensil);
     });
+    ingredientsSelect.addEventListener('change', function(){
+        displayRecipes(recipes);
+        DisplayFilterSelected('ingredients',this.value)
+        //Remove the value from ingredientsSelect
+        for (let i = 0; i < ingredientsSelect.options.length; i++) {
+            if (ingredientsSelect.options[i].value === this.value) {
+                ingredientsSelect.remove(i);
+                break;
+            }
+        }
+    });
     
-    ingredientsSelect.addEventListener('change', displayRecipes);
-    appareilsSelect.addEventListener('change', displayRecipes);
-    ustensilesSelect.addEventListener('change', displayRecipes);
+    appareilsSelect.addEventListener('change', function(){
+        displayRecipes(recipes);
+        DisplayFilterSelected('appareils',this.value)
+        for (let i = 0; i < appareilsSelect.options.length; i++) {
+            if (appareilsSelect.options[i].value === this.value) {
+                appareilsSelect.remove(i);
+                break;
+            }
+        }
+    });
+    ustensilesSelect.addEventListener('change', function(){
+        displayRecipes(recipes);
+        DisplayFilterSelected('ustensiles',this.value)
+        for (let i = 0; i < ustensilesSelect.options.length; i++) {
+            if (ustensilesSelect.options[i].value === this.value) {
+                ustensilesSelect.remove(i);
+                break;
+            }
+        }
+    });
+}
+
+function DisplayFilterSelected(categoryFilter, value){
+    const filterContainer = document.getElementById('SelectedFilter');
+    const div = document.createElement('div');
+    div.classList.add('filterChoose');
+    const p = document.createElement('p');
+    p.textContent = value;
+    const closeButton = document.createElement('button');
+    closeButton.textContent = 'x';
+    closeButton.classList.add('closeButtonChoose');
+    closeButton.addEventListener('click', function() {
+        console.log("remove")
+        const select = document.getElementById(categoryFilter);
+        addOption(select, value, value);
+        filterContainer.removeChild(div);
+        displayRecipes(recipes);
+    });
+    div.appendChild(p);
+    div.appendChild(closeButton);
+    filterContainer.appendChild(div);
 }
 
 
