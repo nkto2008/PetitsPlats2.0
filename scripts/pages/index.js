@@ -1,35 +1,50 @@
 import recipes from "../../data/recipes.js";
 
-function displayRecipes(recipes) {
+let filterState = {
+    ingredients: [],
+    appareils: [],
+    ustensiles: []
+};
+
+
+
+function displayRecipes() {
     const recipesContainer = document.getElementById('recipes-container');
     const filterCounter = document.getElementById('counter')
-    const ingredientsSelect = document.getElementById('ingredients');
-    const appareilsSelect = document.getElementById('appareils');
-    const ustensilesSelect = document.getElementById('ustensiles');
     const filteredRecipes = new Set();
     recipesContainer.innerHTML = ''
     filterCounter.innerHTML = ''
-    if (ingredientsSelect.value || appareilsSelect.value || ustensilesSelect.value){
-        console.log(ingredientsSelect.value)
-        console.log(appareilsSelect.value)
-        console.log(ustensilesSelect.value)
-        if (ingredientsSelect.value) {
+    if (filterState.ingredients.length > 0 || filterState.appareils.length > 0 || filterState.ustensiles.length > 0){
+        console.log(filterState.ingredients)
+        console.log(filterState.appareils)
+        console.log(filterState.ustensiles)
+        if (filterState.ingredients.length > 0) {
             recipes.forEach(recipe => {
-                if (recipe.ingredients.some(ingredient => ingredient.ingredient.includes(ingredientsSelect.value))) {
+                // Vérifie si la recette contient tous les ingrédients du filtre
+                if (filterState.ingredients.every(filterIngredient =>
+                    recipe.ingredients.some(recipeIngredient =>
+                        recipeIngredient.ingredient.toLowerCase().includes(filterIngredient.toLowerCase())))) {
                     filteredRecipes.add(recipe);
                 }
             });
         }
-        if(appareilsSelect.value) {
+        
+        if (filterState.appareils.length > 0) {
             recipes.forEach(recipe => {
-                if (recipe.appliance.includes(appareilsSelect.value)) {
+                // Vérifie si la recette contient tous les appareils du filtre
+                if (filterState.appareils.every(filterAppliance =>
+                    recipe.appliance.toLowerCase().includes(filterAppliance.toLowerCase()))) {
                     filteredRecipes.add(recipe);
                 }
             });
         }
-        if(ustensilesSelect.value){
+        
+        if (filterState.ustensiles.length > 0) {
             recipes.forEach(recipe => {
-                if (recipe.ustensils.includes(ustensilesSelect.value)) {
+                // Vérifie si la recette contient tous les ustensiles du filtre
+                if (filterState.ustensiles.every(filterUstensil =>
+                    recipe.ustensils.some(recipeUstensil =>
+                        recipeUstensil.toLowerCase().includes(filterUstensil.toLowerCase())))) {
                     filteredRecipes.add(recipe);
                 }
             });
@@ -112,7 +127,9 @@ function createRecipeContainer(recipe, container){
         h4.innerHTML = ingredient.ingredient
 
         const p = document.createElement('p')
-        p.innerHTML = ingredient.quantity + "/" + ingredient.unit
+        p.innerHTML = (ingredient.quantity ? ingredient.quantity : '') + " " + (ingredient.unit ? ingredient.unit : '');
+
+       
 
         loopDiv.appendChild(h4)
         loopDiv.appendChild(p)
@@ -135,5 +152,5 @@ function createRecipeContainer(recipe, container){
 
 displayRecipes(recipes);
 
-export default displayRecipes
+export { displayRecipes, filterState };
 
