@@ -90,8 +90,7 @@ function DisplayFilterSelected(categoryFilter, value){
     div.classList.add('filterChoose');
     const p = document.createElement('p');
     p.textContent = value;
-    const closeButton = document.createElement('button');
-    closeButton.textContent = 'x';
+    const closeButton = document.createElement('span');
     closeButton.classList.add('closeButtonChoose');
     closeButton.addEventListener('click', function() {
         console.log("remove")

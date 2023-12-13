@@ -2,11 +2,13 @@ import recipes from "../../data/recipes.js";
 
 function displayRecipes(recipes) {
     const recipesContainer = document.getElementById('recipes-container');
+    const filterCounter = document.getElementById('counter')
     const ingredientsSelect = document.getElementById('ingredients');
     const appareilsSelect = document.getElementById('appareils');
     const ustensilesSelect = document.getElementById('ustensiles');
     const filteredRecipes = new Set();
     recipesContainer.innerHTML = ''
+    filterCounter.innerHTML = ''
     if (ingredientsSelect.value || appareilsSelect.value || ustensilesSelect.value){
         console.log(ingredientsSelect.value)
         console.log(appareilsSelect.value)
@@ -33,17 +35,22 @@ function displayRecipes(recipes) {
             });
         }
         const totalRecipes = filteredRecipes.size;
-        const totalRecipesDisplay = document.createElement('p');
-        totalRecipesDisplay.textContent = totalRecipes + " " + "Recettes";
-        recipesContainer.appendChild(totalRecipesDisplay);
+
+        if (totalRecipes <= 1) {
+            filterCounter.innerHTML = totalRecipes + " " + "Recette"
+        }else {
+            filterCounter.innerHTML = totalRecipes + " " + "Recettes"
+        }
         filteredRecipes.forEach(recipe => {
             createRecipeContainer(recipe, recipesContainer);
         });
     }else{
         const totalRecipes = recipes.length;
-        const totalRecipesDisplay = document.createElement('p');
-        totalRecipesDisplay.textContent = totalRecipes + "Recettes";
-        recipesContainer.appendChild(totalRecipesDisplay);
+        if (totalRecipes <= 1) {
+            filterCounter.innerHTML = totalRecipes + " " + "Recette"
+        }else {
+            filterCounter.innerHTML = totalRecipes + " " + "Recettes"
+        }
         recipes.forEach(recipe => {
             createRecipeContainer(recipe, recipesContainer)
         });
@@ -51,32 +58,78 @@ function displayRecipes(recipes) {
 }
 
 function createRecipeContainer(recipe, container){
-    const recipeDiv = document.createElement('div');
-    recipeDiv.classList.add('recipe');
-    recipeDiv.id = recipe.id
+    const recipeDivContainer = document.createElement('div')
+    recipeDivContainer.classList.add('recipes')
+    ///////////////CARD HEADER////////////////////////////
+    const recipeImageDiv = document.createElement('div')
+    recipeImageDiv.classList.add('card-header')
 
-    /*const image = document.createElement('img');
+    const image = document.createElement('img');
     image.src = "./assets/recettes/"+recipe.image;
     image.alt = recipe.name;
-*/
+    
+    const timer = document.createElement('div')
+    timer.classList.add('timer')
+    timer.innerHTML = recipe.time + " mins"
+
+    recipeImageDiv.appendChild(timer)
+    recipeImageDiv.appendChild(image)
+
+    /////////CARD MAIN/////////////////////
+    const recipeDivMain = document.createElement('div');
+    recipeDivMain.classList.add('card-main');
+    recipeDivMain.id = recipe.id
+
     const name = document.createElement('h2');
     name.textContent = recipe.name;
+
+    const divStepsRecipes = document.createElement('div')
+    divStepsRecipes.classList.add('steps')
+
+    const inth3 = document.createElement('h3')
+    inth3.innerHTML = "RECETTE";
 
     const description = document.createElement('p');
     description.textContent = recipe.description;
 
-    const ingredientsList = document.createElement('ul');
+    divStepsRecipes.appendChild(inth3)
+    divStepsRecipes.appendChild(description)
+
+    const ingredientDiv = document.createElement('div')
+    ingredientDiv.classList.add('ingredients')
+
+    const ingredienth3 = document.createElement('h3')
+    ingredienth3.innerHTML = 'INGRÉDIENTS'
+
+    const detailsIngredients = document.createElement('div')
+    detailsIngredients.classList.add('list-ingredients')
+
     recipe.ingredients.forEach(ingredient => {
-        const listItem = document.createElement('li');
-        listItem.textContent = ingredient.ingredient + " " + ingredient.quantity + " " + ingredient.unit
-        ingredientsList.appendChild(listItem);
+        const loopDiv = document.createElement('div')
+        loopDiv.classList.add('ingredient')
+
+        const h4 = document.createElement('h4')
+        h4.innerHTML = ingredient.ingredient
+
+        const p = document.createElement('p')
+        p.innerHTML = ingredient.quantity + "/" + ingredient.unit
+
+        loopDiv.appendChild(h4)
+        loopDiv.appendChild(p)
+        detailsIngredients.appendChild(loopDiv)
     });
 
-    recipeDiv.appendChild(name);
-    recipeDiv.appendChild(description);
-    recipeDiv.appendChild(ingredientsList);
+    ingredientDiv.appendChild(ingredienth3)
+    ingredientDiv.appendChild(detailsIngredients)
 
-    container.appendChild(recipeDiv);
+    recipeDivMain.appendChild(name)
+    recipeDivMain.appendChild(divStepsRecipes)
+    recipeDivMain.appendChild(ingredientDiv)
+
+    recipeDivContainer.appendChild(recipeImageDiv)
+    recipeDivContainer.appendChild(recipeDivMain)
+
+    container.appendChild(recipeDivContainer)
 }
 
 

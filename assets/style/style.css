@@ -1,0 +1,89 @@
+@font-face{
+    font-family: "anton";
+    src: url("./fonts/anton.ttf");
+}
+
+@font-face{
+    font-family: "manrope";
+    src: url("./fonts/manrope.ttf");
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    color: black;
+    font-family: "manrope";
+}
+
+.t-ou{
+    border: red solid 1px;
+}
+
+body{
+    background-color: #EDEDED;
+}
+
+header{
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    background-color: antiquewhite;
+    height: 660px;
+    background-image: url("../logo/bg_header.jpg");
+    background-position: center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    padding: 0 25%;
+}
+
+header img {
+    position: absolute;
+    top: 0;
+    height: 50px;
+    left: 0;
+    margin: 50px 0 0 75px;
+}
+
+header div p {
+    font-family: "anton";
+    font-size: 44px;
+    color: #FFD15B;
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.form_search {
+    position: relative;
+    display: flex;
+    align-items: center;
+    background-color: white;
+    padding: 10px 30px;
+    border-radius: 10px;
+}
+
+.form_search input {
+    border: none;
+    width: 90%;
+    font-size: 17px;
+    padding: 10px 0;
+    outline: none;
+}
+
+.form_search button {
+    position: absolute;
+    right: 10px;
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    background-color: black;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+}
+
+main{
+    margin: 0 100px;
+}

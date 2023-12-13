@@ -1,0 +1,152 @@
+#recipes-container {
+    display: grid;
+    grid-template-columns: repeat(3,1fr);
+    justify-items: center;
+    margin: 50px 0;
+}
+
+.recipes {
+    display: flex;
+    flex-direction: column;
+    width: 380px;
+    position: relative;
+    overflow: hidden;
+    border-radius: 20px;
+    background-color: white;
+    margin-bottom: 50px;
+}
+
+.timer {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+    background-color: #FFD15B;
+    padding: 5px 15px;
+    border-radius: 50px;
+}
+
+.card-header img {
+    width: 100%;
+    height: 253px;
+    object-fit: cover;
+}
+
+.card-main {
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+}
+
+.card-main h2 {
+    font-family: "anton";
+    font-size: 18px;
+    margin-bottom: 25px;
+}
+
+.steps {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 20px;
+}
+
+.steps h3 {
+    font-family: "manrope";
+    font-size: 12px;
+    color: #7a7a7a;
+    margin-bottom: 15px;
+}
+
+.steps p {
+    font-family: "manrope";
+    font-size: 14px;
+    color: #1b1b1b;
+}
+
+.ingredients{
+    display: flex;
+    flex-direction: column;
+}
+
+.ingredients h3{
+    font-family: "Manrope";
+    color: #7A7A7A;
+    font-size: 12px;
+    margin-bottom: 15px;
+}
+
+.list-ingredients{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+}
+
+.ingredient {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 15px;
+}
+
+.ingredient h4{
+    font-family: "Manrope";
+    color: #1B1B1B;
+    font-size: 14px;
+}
+
+.ingredient p{
+    font-family: "Manrope";
+    color: #7A7A7A;
+    font-size: 14px;
+}
+
+#container-filter {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 30px 0;
+}
+
+#counter {
+    font-family: "anton";
+    font-size: 21px;
+}
+
+#SelectedFilter {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.filterChoose {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 10px;
+    background-color: #FFD15B;
+    color: #1B1B1B;
+    border-radius: 10px;
+    font-weight: bold;
+    margin-right: 30px;
+    margin-bottom: 20px;
+}
+
+.filterChoose span {
+    position: relative;
+    cursor: pointer;
+    margin-left: 50px;
+    height: 20px;
+    width: 20px;
+}
+
+.filterChoose span::before, .filterChoose span::after {
+    content: '';
+    position: absolute;
+    width: 15px;
+    height: 2px;
+    top: 50%;
+    left: 50%;
+    background-color: black;
+    transform: translate(-50%, -50%) rotate(45deg);
+}
+
+.filterChoose span::after {
+    transform: translate(-50%, -50%) rotate(-45deg);
+}
+

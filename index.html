@@ -3,27 +3,35 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="./assets/style/style.css" rel="stylesheet" type="text/css" />
+    <link href="./assets/style/recipes.css" rel="stylesheet" type="text/css" />
+    <script src="https://kit.fontawesome.com/8595e41c3b.js" crossorigin="anonymous"></script>
     <title>Les petits plats</title>
 </head>
 <body>
+    <header>
+        <img src="./assets/logo/lpp_logo.png" alt="Logo les petits plats">
+        <div class="">
+            <p>CHERCHEZ PARMI PLUS DE 1500 RECETTES<br>DU QUOTIDIEN,SIMPLES ET DÉLICIEUSES</p>
+            <form class="form_search" action="" id="searchForm">
+                <input type="text" placeholder="Rechercher une recette, un ingrédient, ..." id="searchInputForm">
+                <button type="submit"><i class="fa-solid fa-magnifying-glass" style="color: white; font-size: 25px;"></i></button>
+            </form>
+        </div>
+    </header>
     <main>
-        <header>
-            <div>
-                <h1>Cherchez parmi plus de 1500 recettes du quotidien, simples et délicieuses</h1>
+        <div id="container-filter">
+            <div id="filter">
+                <select id="ingredients">
+                </select>
+                <select id="appareils">
+                    
+                </select>
+                <select id="ustensiles">
+                    
+                </select>
             </div>
-            <div>
-                <p>Barre de recherche</p>
-            </div>
-        </header>
-        <div id="filter">
-            <select id="ingredients">
-            </select>
-            <select id="appareils">
-                
-            </select>
-            <select id="ustensiles">
-                
-            </select>
+            <p id="counter"></span>
         </div>
         <div id="SelectedFilter">
         </div>
