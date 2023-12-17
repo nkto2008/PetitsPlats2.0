@@ -15,9 +15,6 @@ function displayRecipes() {
     recipesContainer.innerHTML = ''
     filterCounter.innerHTML = ''
     if (filterState.ingredients.length > 0 || filterState.appareils.length > 0 || filterState.ustensiles.length > 0){
-        console.log(filterState.ingredients)
-        console.log(filterState.appareils)
-        console.log(filterState.ustensiles)
         if (filterState.ingredients.length > 0) {
             recipes.forEach(recipe => {
                 // Vérifie si la recette contient tous les ingrédients du filtre
