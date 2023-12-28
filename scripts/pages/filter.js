@@ -2,94 +2,117 @@ import recipes from "../../data/recipes.js"
 import { displayRecipes, filterState } from "../pages/index.js";
 
 
-// Fonction permettant l'ajout d'option dans le select voulu
-//Value: identifié pour l'option
-//text: valeur de l'option affiché a l'utilisateur
-function addOption(selectElement, value, text) {
-    const option = document.createElement('option');
-    option.value = value;
-    option.textContent = text;
-    selectElement.appendChild(option);
-}
 
 function applyFilters() {
     displayRecipes();
 }
 
-function addFilters(recipes) {
-    const ingredientsSelect = document.getElementById('ingredients');
-    const appareilsSelect = document.getElementById('appareils');
-    const ustensilesSelect = document.getElementById('ustensiles');
+function createFilters(recipes, Filter) {
+    const ContainerDivFilter = document.getElementById('container-filter')
 
-    // Ajout d'option par défaut pour ne pas avoir les premiers résultat et donc afficher la liste de recettes complètes
-    addOption(ingredientsSelect, '', 'Ingrédient');
-    addOption(appareilsSelect, '', 'Appareils');
-    addOption(ustensilesSelect, '', 'Ustensiles');
+    const MainDiv = document.createElement('div')
+    const FilterDiv = document.createElement('div')
+    FilterDiv.classList.add('list')
+    FilterDiv.setAttribute('id', 'filter_'+Filter)
 
-    const ingredientsSet = new Set();
-    const appareilsSet = new Set();
-    const ustensilesSet = new Set();
+    const OpenDiv = document.createElement('div')
+    OpenDiv.classList.add('header-list')
+    OpenDiv.setAttribute('id','open_'+Filter)
 
-    //Parcourir le tableau recipes pour récuperer les valeurs (pas de duplication) dans les sets
+    const nameFilter = document.createElement('p')
+    nameFilter.innerHTML = Filter
+
+    const chevronD = document.createElement("i");
+    chevronD.setAttribute("class", "fa-solid fa-chevron-down");
+
+    const chevronU = document.createElement("i");
+    chevronU.setAttribute("class", "fa-solid fa-chevron-up disabled");
+
+    OpenDiv.appendChild(nameFilter)
+    OpenDiv.appendChild(chevronD)
+    OpenDiv.appendChild(chevronU)
+
+    FilterDiv.appendChild(OpenDiv)
+
+    const extensionFiler = document.createElement('div')
+    const wFilter = document.createElement('div')
+    const sFilter = document.createElement('div')
+    const sText = document.createElement('input')
+    sText.type = 'text'
+    sText.placeholder = 'Rechercher ' + Filter
+    sText.setAttribute('id','input_'+Filter)
+
+    sFilter.appendChild(sText)
+    wFilter.appendChild(sFilter)
+    extensionFiler.appendChild(wFilter)
+
+    const ListElementDiv = document.createElement('div')
+    ListElementDiv.setAttribute('id','list_'+Filter)
+    const filterSet = new Set();
     recipes.forEach(recipe => {
-        recipe.ingredients.forEach(ingredient => {
-            ingredientsSet.add(ingredient.ingredient);
+        if (Filter === 'ingredients') {
+            recipe.ingredients.forEach(ingredient => {
+                filterSet.add(ingredient.ingredient.toLowerCase());
+            });
+        } else if (Filter === 'appareils') {
+            filterSet.add(recipe.appliance.toLowerCase());
+        } else if (Filter === 'ustensiles') {
+            recipe.ustensils.forEach(ustensil => {
+                filterSet.add(ustensil.toLowerCase());
+            });
+        }
+    });
+
+    // Creating <p> elements for each unique filter
+    filterSet.forEach(filterValue => {
+        const filterOption = document.createElement('p');
+        filterOption.setAttribute('id', 'filter_' + Filter + '_' + filterValue);
+        filterOption.textContent = filterValue.charAt(0).toUpperCase() + filterValue.slice(1);
+        filterOption.addEventListener('click', function() {
+            // Update filterState based on the clicked filter
+            if (Filter === 'ingredients') {
+                filterState.ingredients.push(filterValue);
+            } else if (Filter === 'appareils') {
+                filterState.appareils.push(filterValue);
+            } else if (Filter === 'ustensiles') {
+                filterState.ustensiles.push(filterValue);
+            }
+
+            // Apply filters and update UI
+            applyFilters();
+            DisplayFilterSelected(Filter, filterValue);
+
+            // Remove the clicked option from the list
+            this.style.display = "none"; // Hide the clicked option
         });
-        appareilsSet.add(recipe.appliance);
-        recipe.ustensils.forEach(ustensil => {
-            ustensilesSet.add(ustensil);
-        });
+        ListElementDiv.appendChild(filterOption);
     });
 
-    // Ajout des ingrédients via le set dans les options
-    ingredientsSet.forEach(ingredient => {
-        addOption(ingredientsSelect, ingredient, ingredient);
-    });
-
-    // idem pour les appareils
-    appareilsSet.forEach(appareil => {
-        addOption(appareilsSelect, appareil, appareil);
-    });
-
-    // idem pour les ustensiles
-    ustensilesSet.forEach(ustensil => {
-        addOption(ustensilesSelect, ustensil, ustensil);
-    });
-    ingredientsSelect.addEventListener('change', function(){
-        filterState.ingredients.push(this.value);
-        applyFilters();
-        DisplayFilterSelected('ingredients',this.value)
-        //Remove the value from ingredientsSelect
-        for (let i = 0; i < ingredientsSelect.options.length; i++) {
-            if (ingredientsSelect.options[i].value === this.value) {
-                ingredientsSelect.remove(i);
-                break;
+    sText.addEventListener('input', function() {
+        const searchValue = sText.value.toLowerCase();
+        const filterOptions = ListElementDiv.getElementsByTagName('p');
+        for (let option of filterOptions) {
+            const optionText = option.textContent.toLowerCase();
+            if (optionText.includes(searchValue)) {
+                option.style.display = ""; // Show option
+            } else {
+                option.style.display = "none"; // Hide option
             }
         }
     });
-    
-    appareilsSelect.addEventListener('change', function(){
-        filterState.appareils.push(this.value);
-        applyFilters();
-        DisplayFilterSelected('appareils',this.value)
-        for (let i = 0; i < appareilsSelect.options.length; i++) {
-            if (appareilsSelect.options[i].value === this.value) {
-                appareilsSelect.remove(i);
-                break;
-            }
-        }
-    });
-    ustensilesSelect.addEventListener('change', function(){
-        filterState.ustensiles.push(this.value);
-        applyFilters();
-        DisplayFilterSelected('ustensiles',this.value)
-        for (let i = 0; i < ustensilesSelect.options.length; i++) {
-            if (ustensilesSelect.options[i].value === this.value) {
-                ustensilesSelect.remove(i);
-                break;
-            }
-        }
-    });
+
+    MainDiv.appendChild(extensionFiler)
+    MainDiv.appendChild(ListElementDiv)
+    ContainerDivFilter.appendChild(FilterDiv)
+    ContainerDivFilter.appendChild(MainDiv)
+
+
+}
+
+function addFilters(recipes) {
+    createFilters(recipes, "ingredients")
+    createFilters(recipes, "appareils")
+    createFilters(recipes, "ustensiles")
 }
 
 function DisplayFilterSelected(categoryFilter, value){
@@ -108,9 +131,9 @@ function DisplayFilterSelected(categoryFilter, value){
         } else if (categoryFilter === 'ustensiles') {
             filterState.ustensiles = filterState.ustensiles.filter(item => item !== value);
         }    
-        const select = document.getElementById(categoryFilter);
-        addOption(select, value, value);
+        
         filterContainer.removeChild(div);
+        
         displayRecipes();
     });
     div.appendChild(p);

@@ -8,7 +8,7 @@ let filterState = {
 
 
 
-function displayRecipes() {
+function displayRecipes(recipes) {
     const recipesContainer = document.getElementById('recipes-container');
     const filterCounter = document.getElementById('counter')
     const filteredRecipes = new Set();
