@@ -15,14 +15,18 @@ function SearchFromInput(input){
    if (input.length >= 3){
     console.log(input)
     const inputLower = input.toLowerCase();
-    const filteredRecipes = recipes.filter(recipe => {
+    const filteredRecipes = [];
+    
+    recipes.forEach(recipe => {
         const titleMatch = recipe.name.toLowerCase().includes(inputLower);
         const descriptionMatch = recipe.description.toLowerCase().includes(inputLower);
         const ingredientMatch = recipe.ingredients.some(ingredient => 
             ingredient.ingredient.toLowerCase().includes(inputLower)
         );
-
-        return titleMatch || descriptionMatch || ingredientMatch;
+    
+        if (titleMatch || descriptionMatch || ingredientMatch) {
+            filteredRecipes.push(recipe);
+        }
     });
 
     displayRecipes(filteredRecipes);
