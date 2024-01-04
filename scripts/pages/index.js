@@ -8,12 +8,16 @@ let filterState = {
 
 
 
-function displayRecipes(recipes) {
+function displayRecipes(recipes, stateSearch) {
     const recipesContainer = document.getElementById('recipes-container');
     const filterCounter = document.getElementById('counter')
     const filteredRecipes = new Set();
     recipesContainer.innerHTML = ''
     filterCounter.innerHTML = ''
+    if (stateSearch) {
+        
+    }
+    console.log(filteredRecipes.size)
     if (filterState.ingredients.length > 0 || filterState.appareils.length > 0 || filterState.ustensiles.length > 0){
         if (filterState.ingredients.length > 0) {
             recipes.forEach(recipe => {
