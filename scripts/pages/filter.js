@@ -86,7 +86,7 @@ function createFilters(recipes, Filter) {
         const filterOption = document.createElement('p');
         filterOption.setAttribute('id', 'filter_' + Filter + '_' + filterValue);
         filterOption.innerHTML = filterValue.charAt(0).toUpperCase() + filterValue.slice(1);
-        filterOption.addEventListener('click', () => {
+        filterOption.addEventListener('click', function() {
             if (Filter === 'ingredients') {
                 filterState.ingredients.push(filterValue);
             } else if (Filter === 'appareils') {
@@ -104,7 +104,7 @@ function createFilters(recipes, Filter) {
         option.appendChild(filterOption);
     });
 
-    arrow.addEventListener('click', () => {
+    arrow.addEventListener('click', function() {
         if (down.classList.contains("disabled")) {
             extDiv.style.display = "none";
             down.classList.remove("disabled");
