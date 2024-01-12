@@ -6,14 +6,18 @@ function GetInputSearch() {
     const searchInput = document.getElementById('searchInputForm');
 
     searchInput.addEventListener('input', () => {
-        const userInput = searchInput.value
-        SearchFromInput(userInput)
+        const userInput = searchInput.value;
+        filterState.searchQuery = userInput; // Mise à jour de l'état de recherche
+        if (userInput.length >= 3 || userInput.length === 0) {
+            SearchFromInput(userInput);
+        }
     });
 }
+
 const filteredRecipes = [];
+
 function SearchFromInput(input){
    if (input.length >= 3){
-    console.log(input)
     const inputLower = input.toLowerCase();
     
     
@@ -54,9 +58,9 @@ function SearchFromInput(input){
             filteredRecipes.push(recipe);
         }
     });
-
+    filterState.searchQuery = input;
     displayRecipes(filteredRecipes);
-   }else{
+   }else if(input.length == 0) {
     displayRecipes(recipes)
    }
 }

@@ -3,7 +3,8 @@ import recipes from "../../data/recipes.js";
 let filterState = {
     ingredients: [],
     appareils: [],
-    ustensiles: []
+    ustensiles: [],
+    searchQuery: ""
 };
 
 
@@ -14,10 +15,14 @@ function displayRecipes(recipes, stateSearch) {
     const filteredRecipes = new Set();
     recipesContainer.innerHTML = ''
     filterCounter.innerHTML = ''
-    if (stateSearch) {
-        
+    if (filterState.searchQuery.length >= 3) {
+        const inputLower = filterState.searchQuery.toLowerCase();
+        recipes = recipes.filter(recipe =>
+            recipe.name.toLowerCase().includes(inputLower) ||
+            recipe.description.toLowerCase().includes(inputLower) ||
+            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(inputLower))
+        );
     }
-    console.log(filteredRecipes.size)
     if (filterState.ingredients.length > 0 || filterState.appareils.length > 0 || filterState.ustensiles.length > 0){
         if (filterState.ingredients.length > 0) {
             recipes.forEach(recipe => {
