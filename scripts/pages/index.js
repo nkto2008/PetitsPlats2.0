@@ -3,17 +3,26 @@ import recipes from "../../data/recipes.js";
 let filterState = {
     ingredients: [],
     appareils: [],
-    ustensiles: []
+    ustensiles: [],
+    searchQuery: ""
 };
 
 
 
-function displayRecipes(recipes) {
+function displayRecipes(recipes, stateSearch) {
     const recipesContainer = document.getElementById('recipes-container');
     const filterCounter = document.getElementById('counter')
     const filteredRecipes = new Set();
     recipesContainer.innerHTML = ''
     filterCounter.innerHTML = ''
+    if (filterState.searchQuery.length >= 3) {
+        const inputLower = filterState.searchQuery.toLowerCase();
+        recipes = recipes.filter(recipe =>
+            recipe.name.toLowerCase().includes(inputLower) ||
+            recipe.description.toLowerCase().includes(inputLower) ||
+            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(inputLower))
+        );
+    }
     if (filterState.ingredients.length > 0 || filterState.appareils.length > 0 || filterState.ustensiles.length > 0){
         if (filterState.ingredients.length > 0) {
             recipes.forEach(recipe => {

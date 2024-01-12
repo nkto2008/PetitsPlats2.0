@@ -4,50 +4,69 @@ import { displayRecipes, filterState } from "../pages/index.js";
 
 
 function applyFilters() {
-    displayRecipes();
+    displayRecipes(recipes);
 }
 
 function createFilters(recipes, Filter) {
-    const ContainerDivFilter = document.getElementById('container-filter')
+    const filter = document.getElementById('filter')
 
-    const MainDiv = document.createElement('div')
-    const FilterDiv = document.createElement('div')
-    FilterDiv.classList.add('list')
-    FilterDiv.setAttribute('id', 'filter_'+Filter)
+    const div = document.createElement('div')
+    const flt = document.createElement('div')
+    flt.setAttribute('class','list')
+    flt.setAttribute('id','flt_'+Filter)
 
-    const OpenDiv = document.createElement('div')
-    OpenDiv.classList.add('header-list')
-    OpenDiv.setAttribute('id','open_'+Filter)
+    const arrow = document.createElement('div')
+    arrow.setAttribute('class','header_list')
+    arrow.setAttribute('id', 'arrow_'+Filter)
 
-    const nameFilter = document.createElement('p')
-    nameFilter.innerHTML = Filter
+    const p = document.createElement('p')
+    p.innerHTML = Filter
 
-    const chevronD = document.createElement("i");
-    chevronD.setAttribute("class", "fa-solid fa-chevron-down");
+    const down = document.createElement('i')
+    down.setAttribute('class', 'fa-solid fa-chevron-down')
 
-    const chevronU = document.createElement("i");
-    chevronU.setAttribute("class", "fa-solid fa-chevron-up disabled");
+    const up = document.createElement("i");
+    up.setAttribute("class", "fa-solid fa-chevron-up disabled");
 
-    OpenDiv.appendChild(nameFilter)
-    OpenDiv.appendChild(chevronD)
-    OpenDiv.appendChild(chevronU)
+    arrow.appendChild(p)
+    arrow.appendChild(down)
+    arrow.appendChild(up)
 
-    FilterDiv.appendChild(OpenDiv)
+    flt.appendChild(arrow)
 
-    const extensionFiler = document.createElement('div')
-    const wFilter = document.createElement('div')
-    const sFilter = document.createElement('div')
-    const sText = document.createElement('input')
-    sText.type = 'text'
-    sText.placeholder = 'Rechercher ' + Filter
-    sText.setAttribute('id','input_'+Filter)
+    const extDiv = document.createElement('div')
+    extDiv.setAttribute('class','extension_filter')
 
-    sFilter.appendChild(sText)
-    wFilter.appendChild(sFilter)
-    extensionFiler.appendChild(wFilter)
+    const wrapSearch = document.createElement('div');
+    wrapSearch.setAttribute("class", "wrap_srch");
 
-    const ListElementDiv = document.createElement('div')
-    ListElementDiv.setAttribute('id','list_'+Filter)
+    const inputSearch = document.createElement('div');
+    inputSearch.setAttribute("class", "input_search");
+
+    const input = document.createElement('input')
+    input.setAttribute("type", "text");
+    input.setAttribute("id", "input_" + Filter)
+    input.setAttribute("placeholder", "Rechercher " + Filter)
+
+    const i = document.createElement('i')
+    i.setAttribute("class", "fa-solid fa-magnifying-glass")
+
+    inputSearch.appendChild(input)
+    inputSearch.appendChild(i)
+
+    wrapSearch.appendChild(inputSearch)
+    extDiv.appendChild(wrapSearch)
+
+    const option = document.createElement('div')
+    option.setAttribute('class', "list_options")
+    option.setAttribute('id', "option_"+Filter)
+
+    extDiv.appendChild(option)
+    flt.appendChild(extDiv)
+    div.appendChild(flt)
+    filter.appendChild(div)
+
+    //ISOLER CHAQUE FILTRE
     const filterSet = new Set();
     recipes.forEach(recipe => {
         if (Filter === 'ingredients') {
@@ -63,13 +82,11 @@ function createFilters(recipes, Filter) {
         }
     });
 
-    // Creating <p> elements for each unique filter
     filterSet.forEach(filterValue => {
         const filterOption = document.createElement('p');
         filterOption.setAttribute('id', 'filter_' + Filter + '_' + filterValue);
-        filterOption.textContent = filterValue.charAt(0).toUpperCase() + filterValue.slice(1);
+        filterOption.innerHTML = filterValue.charAt(0).toUpperCase() + filterValue.slice(1);
         filterOption.addEventListener('click', function() {
-            // Update filterState based on the clicked filter
             if (Filter === 'ingredients') {
                 filterState.ingredients.push(filterValue);
             } else if (Filter === 'appareils') {
@@ -78,34 +95,39 @@ function createFilters(recipes, Filter) {
                 filterState.ustensiles.push(filterValue);
             }
 
-            // Apply filters and update UI
+
             applyFilters();
             DisplayFilterSelected(Filter, filterValue);
 
-            // Remove the clicked option from the list
-            this.style.display = "none"; // Hide the clicked option
+            this.style.display = "none"; 
         });
-        ListElementDiv.appendChild(filterOption);
+        option.appendChild(filterOption);
     });
 
-    sText.addEventListener('input', function() {
-        const searchValue = sText.value.toLowerCase();
-        const filterOptions = ListElementDiv.getElementsByTagName('p');
-        for (let option of filterOptions) {
-            const optionText = option.textContent.toLowerCase();
+    arrow.addEventListener('click', function() {
+        if (down.classList.contains("disabled")) {
+            extDiv.style.display = "none";
+            down.classList.remove("disabled");
+            up.classList.add("disabled");
+        } else {
+            extDiv.style.display = "block";
+            up.classList.remove("disabled");
+            down.classList.add("disabled");
+        }
+    })
+
+    input.addEventListener('input', function() {
+        const searchValue = input.value.toLowerCase();
+        const filterOptions = option.getElementsByTagName('p');
+        for (let options of filterOptions) {
+            const optionText = options.textContent.toLowerCase();
             if (optionText.includes(searchValue)) {
-                option.style.display = ""; // Show option
+                options.style.display = ""; // Show option
             } else {
-                option.style.display = "none"; // Hide option
+                options.style.display = "none"; // Hide option
             }
         }
     });
-
-    MainDiv.appendChild(extensionFiler)
-    MainDiv.appendChild(ListElementDiv)
-    ContainerDivFilter.appendChild(FilterDiv)
-    ContainerDivFilter.appendChild(MainDiv)
-
 
 }
 
@@ -134,7 +156,7 @@ function DisplayFilterSelected(categoryFilter, value){
         
         filterContainer.removeChild(div);
         
-        displayRecipes();
+        displayRecipes(recipes);
     });
     div.appendChild(p);
     div.appendChild(closeButton);
