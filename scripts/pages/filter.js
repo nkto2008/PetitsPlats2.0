@@ -1,10 +1,104 @@
 import recipes from "../../data/recipes.js"
+import { filteredRecipes } from "./search.js";
 import { displayRecipes, filterState } from "../pages/index.js";
 
 
-
 function applyFilters() {
-    displayRecipes(recipes);
+    let filteredRecipes = recipes;
+
+    
+    if (filterState.searchQuery.length >= 3) {
+        filteredRecipes = filteredRecipes.filter(recipe =>
+            recipe.name.toLowerCase().includes(filterState.searchQuery.toLowerCase()) ||
+            recipe.description.toLowerCase().includes(filterState.searchQuery.toLowerCase()) ||
+            recipe.ingredients.some(ingredient => ingredient.ingredient.toLowerCase().includes(filterState.searchQuery.toLowerCase()))
+        );
+    }
+
+    
+    if (filterState.ingredients.length > 0) {
+        filteredRecipes = filteredRecipes.filter(recipe =>
+            filterState.ingredients.every(filterIngredient =>
+                recipe.ingredients.some(recipeIngredient =>
+                    recipeIngredient.ingredient.toLowerCase().includes(filterIngredient.toLowerCase())
+                )
+            )
+        );
+    }
+
+   
+    if (filterState.appareils.length > 0) {
+        filteredRecipes = filteredRecipes.filter(recipe =>
+            filterState.appareils.some(filterAppliance =>
+                recipe.appliance.toLowerCase().includes(filterAppliance.toLowerCase())
+            )
+        );
+    }
+
+    
+    if (filterState.ustensiles.length > 0) {
+        filteredRecipes = filteredRecipes.filter(recipe =>
+            filterState.ustensiles.every(filterUstensil =>
+                recipe.ustensils.some(recipeUstensil =>
+                    recipeUstensil.toLowerCase().includes(filterUstensil.toLowerCase())
+                )
+            )
+        );
+    }
+
+    
+    updateFilters(filteredRecipes);
+
+
+    displayRecipes(filteredRecipes);
+}
+
+
+function updateFilters(filteredRecipes) {
+    const newIngredients = new Set();
+    const newAppareils = new Set();
+    const newUstensiles = new Set();
+
+    filteredRecipes.forEach(recipe => {
+        recipe.ingredients.forEach(ingredient => {
+            newIngredients.add(ingredient.ingredient);
+        });
+        newAppareils.add(recipe.appliance);
+        recipe.ustensils.forEach(ustensil => {
+            newUstensiles.add(ustensil);
+        });
+    });
+
+    // Mettre à jour le DOM pour chaque type de filtre
+    updateFilterDOM('ingredients', newIngredients);
+    updateFilterDOM('appareils', newAppareils);
+    updateFilterDOM('ustensiles', newUstensiles);
+}
+
+function updateFilterDOM(filterType, options) {
+    const filterContainer = document.getElementById(`option_${filterType}`);
+    filterContainer.innerHTML = '';
+
+    options.forEach(option => {
+        const optionElement = document.createElement('p');
+        optionElement.textContent = option;
+        optionElement.addEventListener('click', function() {
+            if (filterType === 'ingredients') {
+                filterState.ingredients.push(option);
+            } else if (filterType === 'appareils') {
+                filterState.appareils.push(option);
+            } else if (filterType === 'ustensiles') {
+                filterState.ustensiles.push(option);
+            }
+
+            // Ajouter le filtre sélectionné à l'affichage
+            DisplayFilterSelected(filterType, option);
+
+            // Réappliquer les filtres
+            applyFilters();
+        });
+        filterContainer.appendChild(optionElement);
+    });
 }
 
 function createFilters(recipes, Filter) {
@@ -165,3 +259,5 @@ function DisplayFilterSelected(categoryFilter, value){
 
 
 addFilters(recipes);
+
+export {updateFilters}
