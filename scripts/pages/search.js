@@ -1,4 +1,5 @@
 import recipes from "../../data/recipes.js"
+import { updateFilters } from "./filter.js";
 import { displayRecipes, filterState } from "./index.js" 
 
 
@@ -69,11 +70,14 @@ function SearchFromInput(input){
                 filteredRecipes.push(recipe);
             }
         }
-        filterState.searchQuery = input; 
-        displayRecipes(filteredRecipes); 
+        filterState.searchQuery = input;
+        updateFilters(filteredRecipes);
+        displayRecipes(filteredRecipes);
     } else if(input.length == 0) {
+        updateFilters(recipes)
         displayRecipes(recipes); 
     }
+    
 }
 
 
